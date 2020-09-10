@@ -3,6 +3,7 @@ package com.techplants.kube.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -10,13 +11,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "employee")
+@Table(name = "doctor")
 @Builder(toBuilder = true)
-public class EmployeeEntity {
+public class DoctorEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="employee_id")
-    private Integer employeeId;
+    @Column(name="doctor_id")
+    private Integer doctorId;
 
     @Column(name="first_name")
     private String firstName;
@@ -24,7 +25,16 @@ public class EmployeeEntity {
     @Column(name="last_name")
     private String lastName;
 
+    @Column(name="rating")
+    private int rating;
+
     @Column(name="age")
     private int age;
+
+    @Column(name="experience")
+    private int experience;
+
+    @Column(name="available")
+    private String available;
 
 }
