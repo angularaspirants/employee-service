@@ -20,6 +20,9 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    @Autowired
+    private PatientService patientService;
+
     @Override
     public ResponseEntity<List<Doctor>> getAllDoctors() {
         List<Doctor> doctors = new ArrayList<>();
@@ -85,6 +88,21 @@ public class DoctorServiceImpl implements DoctorService {
 
     }
 
+    @Override
+    public ResponseEntity<Doctor> getPatientsByDoctorId(int doctorId) {
+        return doctorRepository.findById(doctorId)
+                .map(doctorEntity -> {
+                    Doctor doctor = toModel(doctorEntity);
+                    doctor.setPatients(patientService.getPatientsByDoctor(doctorEntity));
+                    return doctor;
+                })
+                .map(doctor -> {
+                    return ResponseEntity.ok()
+                            .location(resourceUri(doctor.getDoctorId()))
+                            .body(doctor);
+                }).orElseThrow(IllegalArgumentException::new);
+    }
+
     private static Doctor toModel(DoctorEntity doctorEntity){
         return Doctor.builder()
                 .doctorId(doctorEntity.getDoctorId())
@@ -92,7 +110,7 @@ public class DoctorServiceImpl implements DoctorService {
                 .lastName(doctorEntity.getLastName())
                 .age(doctorEntity.getAge())
                 .experience(doctorEntity.getExperience())
-                .available(doctorEntity.getAvailable())
+                .insurance(doctorEntity.getInsurance())
                 .rating(doctorEntity.getRating())
                 .build();
     }
@@ -104,7 +122,7 @@ public class DoctorServiceImpl implements DoctorService {
                 .lastName(doctorModel.getLastName())
                 .age(doctorModel.getAge())
                 .experience(doctorModel.getExperience())
-                .available(doctorModel.getAvailable())
+                .insurance(doctorModel.getInsurance())
                 .rating(doctorModel.getRating())
                 .build();
     }

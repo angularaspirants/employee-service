@@ -2,6 +2,8 @@ package com.techplants.kube.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,6 +23,8 @@ public class Doctor {
 
     private int experience;
 
-    private String available;
+    private String insurance;
+
+    private List<Patient> patients;
 
 }

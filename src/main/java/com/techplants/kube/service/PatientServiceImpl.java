@@ -8,13 +8,16 @@ import com.techplants.kube.model.Patient;
 import com.techplants.kube.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.techplants.kube.utils.ResponseUtil.resourceUri;
 
+@Service
 public class PatientServiceImpl implements PatientService {
 
     @Autowired
@@ -76,6 +79,15 @@ public class PatientServiceImpl implements PatientService {
         return null;
     }
 
+    @Override
+    public List<Patient> getPatientsByDoctor(DoctorEntity doctorEntity) {
+        return patientRepository
+                .getPatientEntitiesByDoctor(doctorEntity)
+                .stream()
+                .map(patientEntity -> toModel(patientEntity))
+                .collect(Collectors.toList());
+    }
+
     private static Patient toModel(PatientEntity patientEntity){
         return Patient.builder()
                 .patientId(patientEntity.getPatientId())
@@ -84,7 +96,6 @@ public class PatientServiceImpl implements PatientService {
                 .age(patientEntity.getAge())
                 .visits(patientEntity.getVisits())
                 .insurance(patientEntity.getInsurance())
-                .doctor(toDoctorModel(patientEntity.getDoctor()))
                 .build();
     }
 
@@ -107,7 +118,7 @@ public class PatientServiceImpl implements PatientService {
                 .lastName(doctorEntity.getLastName())
                 .age(doctorEntity.getAge())
                 .experience(doctorEntity.getExperience())
-                .available(doctorEntity.getAvailable())
+                .insurance(doctorEntity.getInsurance())
                 .rating(doctorEntity.getRating())
                 .build();
     }

@@ -1,5 +1,6 @@
 package com.techplants.kube.service;
 
+import com.techplants.kube.entity.DoctorEntity;
 import com.techplants.kube.model.Patient;
 import org.springframework.http.ResponseEntity;
 
@@ -16,4 +17,6 @@ public interface PatientService {
     public ResponseEntity<Patient> updatePatient(int patientId, Patient patient);
 
     public ResponseEntity<?> deletePatientById(int patientId);
+
+    public List<Patient> getPatientsByDoctor(DoctorEntity doctorEntity);
 }

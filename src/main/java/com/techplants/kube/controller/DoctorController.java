@@ -1,6 +1,7 @@
 package com.techplants.kube.controller;
 
 import com.techplants.kube.model.Doctor;
+import com.techplants.kube.model.Patient;
 import com.techplants.kube.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,10 @@ public class DoctorController {
     @DeleteMapping("/doctor/{doctorId}")
     public ResponseEntity<?> deleteDoctor(@PathVariable("doctorId") int doctorId){
         return doctorService.deleteDoctor(doctorId);
+    }
+
+    @GetMapping("/doctor/{doctorId}/patient")
+    public ResponseEntity<Doctor> getPatientsByDoctor(@PathVariable("doctorId") int doctorId){
+        return doctorService.getPatientsByDoctorId(doctorId);
     }
 }

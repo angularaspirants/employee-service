@@ -13,9 +13,10 @@ import java.util.Set;
 @Entity
 @Table(name = "doctor")
 @Builder(toBuilder = true)
+@SequenceGenerator(name="doctorSeq", initialValue=10101, allocationSize=1)
 public class DoctorEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="doctorSeq")
     @Column(name="doctor_id")
     private Integer doctorId;
 
@@ -34,7 +35,7 @@ public class DoctorEntity {
     @Column(name="experience")
     private int experience;
 
-    @Column(name="available")
-    private String available;
+    @Column(name="insurance")
+    private String insurance;
 
 }

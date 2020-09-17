@@ -16,4 +16,6 @@ public interface DoctorService {
     public ResponseEntity<Doctor> updateDoctor(int doctorId, Doctor doctor);
 
     public ResponseEntity<?> deleteDoctor(int doctorId);
+
+    public ResponseEntity<Doctor> getPatientsByDoctorId(int doctorId);
 }

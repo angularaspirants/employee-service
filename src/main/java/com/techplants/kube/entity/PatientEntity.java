@@ -12,9 +12,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "patient")
 @Builder(toBuilder = true)
+@SequenceGenerator(name="patientSeq", initialValue=20101, allocationSize=1)
 public class PatientEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="patientSeq")
     @Column(name="patient_id")
     private Integer patientId;
 
