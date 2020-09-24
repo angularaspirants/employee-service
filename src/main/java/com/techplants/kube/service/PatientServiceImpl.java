@@ -66,7 +66,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public ResponseEntity<Patient> updatePatient(int patientId, Patient patient) {
         return patientRepository.findById(patientId)
-                .map(patientEntity -> toEntity(patient, null))
+                .map(patientEntity -> toEntity(patient, patientEntity.getDoctor()))
                 .map(patientRepository::save)
                 .map(pat -> ResponseEntity
                         .ok()
@@ -81,7 +81,15 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public ResponseEntity<?> deletePatientById(int patientId) {
-        return null;
+        return patientRepository.findById(patientId)
+                .map(patientEntity -> {
+                    patientRepository.delete(patientEntity);
+                    return ResponseEntity
+                            .ok()
+                            .build();
+                }).orElseThrow(() -> new ResourceNotFoundException(
+                        "Patient ID " + patientId + " Not Found!"
+                ));
     }
 
     @Override
