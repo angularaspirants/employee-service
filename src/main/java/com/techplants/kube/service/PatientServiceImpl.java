@@ -5,6 +5,7 @@ import com.techplants.kube.entity.PatientEntity;
 import com.techplants.kube.exception.ResourceNotFoundException;
 import com.techplants.kube.model.Doctor;
 import com.techplants.kube.model.Patient;
+import com.techplants.kube.repository.DoctorRepository;
 import com.techplants.kube.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     @Override
     public ResponseEntity<List<Patient>> getAllPatients() {
@@ -49,7 +53,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public ResponseEntity<Patient> createPatient(Patient patient) {
-        return Optional.of(toEntity(patient, null))
+        Optional<DoctorEntity> doctorEntity = doctorRepository.findById(10001);
+        return Optional.of(toEntity(patient, doctorEntity.get()))
                 .map(patientRepository::save)
                 .map(patientEntity -> {
                     return ResponseEntity
@@ -120,6 +125,17 @@ public class PatientServiceImpl implements PatientService {
                 .experience(doctorEntity.getExperience())
                 .insurance(doctorEntity.getInsurance())
                 .rating(doctorEntity.getRating())
+                .build();
+    }
+    private static DoctorEntity toDoctorEntity(Doctor doctorModel){
+        return DoctorEntity.builder()
+                .doctorId(doctorModel.getDoctorId())
+                .firstName(doctorModel.getFirstName())
+                .lastName(doctorModel.getLastName())
+                .age(doctorModel.getAge())
+                .experience(doctorModel.getExperience())
+                .insurance(doctorModel.getInsurance())
+                .rating(doctorModel.getRating())
                 .build();
     }
 }
